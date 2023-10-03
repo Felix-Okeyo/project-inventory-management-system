@@ -17,8 +17,7 @@ class User(db.Model, SerializerMixin):
     second_name = db.Column(db.String(50), nullable=False)
     email=db.Column(db.String(100), nullable=False)
     password=db.Column(db.String(100), nullable=False)
-    
-    
+      
 class Product(db.Model, SerializerMixin):
     __tablename__ = 'products'
     
@@ -47,7 +46,7 @@ class Supplier(db.Model, SerializerMixin):
     #relationships
     purchases=db.relationship('Purchase', back_populates ='supplier')
     
-class Purchase(db.model, SerializerMixin):
+class Purchase(db.Model, SerializerMixin):
     __tablename__='purchases'
     
     id=db.Column(db.Integer, primary_key=True)
@@ -58,14 +57,12 @@ class Purchase(db.model, SerializerMixin):
     product=db.relationship('Product', back_populates='products')
     supplier=db.relationship('Supplier', back_populates='suppliers')
 
-
-
-class Shipping (db.model, SerializerMixin):
+class Shipping (db.Model, SerializerMixin):
     __tablename__='shippings'
     
     id=db.Column(db.Integer, primary_key=True)
     product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    status=db.Column(db.string(30), nullable=False)
+    status=db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
