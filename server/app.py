@@ -161,6 +161,9 @@ class SupplierById(Resource):
      # @jwt_required
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
+        db.session.delete(supplier)
+        db.session.commit()
+        return {'message': 'Supplier deleted successfully'}
         
 
         
