@@ -5,7 +5,7 @@ import CardItem from './CardItem';
 function Body() {
   return (
     <div className='cards'>
-      <h1>Products</h1>
+      <h2>Products</h2>
       <div className='cards__container'>
         <div className='cards__wrapper'>
           <ul className='cards__items'>
