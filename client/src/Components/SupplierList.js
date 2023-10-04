@@ -1,8 +1,14 @@
 import React from 'react';
 
 
-const ProductList = ({ suppliers }) =>{
+const ProductList = ({ suppliers }) => {
   
+  
+  
+zzz
+ 
+
+
   return (
     <div className='Suppliers'>
       
