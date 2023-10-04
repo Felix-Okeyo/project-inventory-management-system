@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import './Newsupplier.css'
 
 function NewSupplier({ addSupplier }){
   const [name, setName] = useState("");
@@ -39,20 +40,58 @@ function NewSupplier({ addSupplier }){
   
 
 
-    return(
-      <>
+  return (
+    <div className="supplier-form-container">
       <h1>New Supplier</h1>
-        <form>
-            <label>Name:</label>
-            <input type="Name" value={name} onChange={handleNameChange} /><br></br>
-            <label>Contact</label>
-            <input type="text" value={contact} onChange={handleContactChange}/><br></br>
-            <label>Image</label>
-            <input type="text" value={image} onChange={handleImageChange}/><br></br>
-            
-            <button type="submit" onClick={handleSubmit }>Add Supplier</button><br></br>
-        </form>
-        </>
-    )
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="label" htmlFor="name">
+            Name:
+          </label>
+          <input
+            className="input-field"
+            type="text"
+            id="name"
+            name="name"
+            value={name}
+            onChange={handleNameChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label className="label" htmlFor="contact">
+            Contact:
+          </label>
+          <input
+            className="input-field"
+            type="text"
+            id="contact"
+            name="contact"
+            value={contact}
+            onChange={handleContactChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label className="label" htmlFor="image">
+            Image URL:
+          </label>
+          <input
+            className="input-field"
+            type="text"
+            id="image"
+            name="image"
+            value={image}
+            onChange={handleImageChange}
+            required
+          />
+        </div>
+        <button className="button" type="submit">
+          Add Supplier
+        </button>
+      </form>
+    </div>
+  );
 }
+
 export default NewSupplier

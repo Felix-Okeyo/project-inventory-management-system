@@ -24,7 +24,7 @@ function Supplier() {
     <>
       <h1>Suppliers</h1>
       {/* Button to toggle the NewSupplier component */}
-      <button onClick={() => setShowNewSupplier(!showNewSupplier)}>
+      <button onClick={() => setShowNewSupplier(!showNewSupplier)} className='hide'>
         {showNewSupplier ? 'Hide form' : 'Add New Supplier'}
       </button>
       

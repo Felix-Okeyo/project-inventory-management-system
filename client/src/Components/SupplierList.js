@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const ProductList = ({ suppliers }) => {
+const SupplierList= ({ suppliers }) => {
 
  
 
@@ -32,4 +32,4 @@ const ProductList = ({ suppliers }) => {
   );
 };
 
-export default ProductList;
+export default SupplierList;

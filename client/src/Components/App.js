@@ -4,7 +4,7 @@ import NavBar from "./Navbar";
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 import Home from "./Home";
 import Incoming from "./Incoming";
-
+import './Body.css';
 import Products from "./Products";
 import Outgoing from "./Outgoing";
 import Supplier from "./Supplier";
