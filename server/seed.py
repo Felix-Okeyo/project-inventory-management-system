@@ -16,8 +16,8 @@ with app.app_context():
 
     def seed_data():
         print("🦸‍♀️ Seeding User...")
-        user1 =User(first_name="joy", second_name="akinyi", email="joyakinyi@mail.com", password="moringa20")
-        user2 =User(first_name="felix", second_name="okeyo", email="felixokeyo@mail.com", password="moringa21")
+        user1 =User(first_name="joy", second_name="akinyi", username = "itsjoycoder", email="joyakinyi@mail.com", password="moringa20")
+        user2 =User(first_name="felix", second_name="okeyo", username = "itsfelixayo", email="felixokeyo@mail.com", password="moringa21")
     
         user_list =[user1, user2]
         db.session.add_all(user_list)
