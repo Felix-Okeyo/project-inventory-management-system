@@ -138,6 +138,36 @@ class ProductById(Resource):
             return make_response(jsonify(product_dict), 200)
         else:
             return make_response(jsonify({"error": "Product not found"}),404)
+    
+    def patch(self, id):
+        product = Product.query.filter_by(id=id).first()
+        data = request.get_json()
+        
+        if product:
+            for attr in data:
+                setattr(product, attr, data[attr])
+            
+            db.session.add(product)
+            db.session.commit()
+            
+            response_body = {
+                "id": product.id,
+                "image": product.image,
+                "description": product.description,
+                "type": product.type,
+                "supplier": product.supplier_id,
+                "quantity": product.quantity,
+            }
+            return response_body, 201
+        else:
+            return make_response(jsonify({"error": "Product not found"}),404)
+        
+     # @jwt_required
+    def delete (self, id):
+        product = Product.query.filter_by(id=id).first()
+        db.session.delete(product)
+        db.session.commit()
+        return {'message': 'Product deleted successfully'}
         
     
 class Suppliers(Resource):
@@ -232,8 +262,20 @@ class PurchaseById(Resource):
         else:
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
-
-
+class Shippings(Resource):
+    #get all shippings 
+    def get(self):
+        shippings = []
+        for shipping in Shipping.query.all():
+            shipping_dict = {
+                "id": shipping.id,
+                "product_id": shipping.product_id,
+                "status": shipping.status,
+                "created_at": shipping.created_at,
+                "updated_at": shipping.updated_at
+            }
+            shippings.append(shipping_dict)
+        return make_response(jsonify(shippings), 200)
 
 api.add_resource(Home, '/')
 # api.add_resource(UserRegistrationResource, '/register')
@@ -244,6 +286,7 @@ api.add_resource(PurchaseById, '/purchases/<int:id>')
 api.add_resource(SupplierById, '/suppliers/<int:id>')
 api.add_resource(Products, '/products')
 api.add_resource(ProductById, '/products/<int:id>')
+api.add_resource(Shippings, '/shippings')
 
 
 
