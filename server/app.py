@@ -136,6 +136,7 @@ class SupplierById(Resource):
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
     #edit supplier details 
+    # @jwt_required
     def patch(self, id):
         supplier = Supplier.query.filter_by(id=id).first()
         data = request.get_json()
@@ -156,6 +157,11 @@ class SupplierById(Resource):
             return response_body, 201
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
+        
+     # @jwt_required
+    def delete (self, id):
+        supplier = Supplier.query.filter_by(id=id).first()
+        
 
         
 class Purchases(Resource):
