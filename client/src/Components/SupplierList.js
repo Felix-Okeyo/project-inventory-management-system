@@ -2,12 +2,6 @@ import React from 'react';
 
 
 const ProductList = ({ suppliers }) => {
-  
-  
-  
-
- 
-
 
   return (
     <div className='Suppliers'>
