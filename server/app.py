@@ -105,6 +105,41 @@ class Home(Resource):
         }
         return make_response(response_message, 200)
     
+class Products(Resource):
+     # @jwt_required
+    def get(self):
+        products = []
+        for product in Product.query.all():
+            product_dict ={
+                "id": product.id,
+                "image": product.image,
+                "description": product.description,
+                "type": product.type,
+                "supplier": product.supplier_id,
+                "quantity": product.quantity,
+            }
+            products.append(product_dict)
+        return make_response(jsonify(products), 200)
+
+class ProductById(Resource):
+    # @jwt_required
+    #get one product by id from db
+    def get(self, id):
+        product = Product.query.filter_by(id=id).first()
+        if product:
+            product_dict ={
+                "id": product.id,
+                "image": product.image,
+                "description": product.description,
+                "type": product.type,
+                "supplier": product.supplier_id,
+                "quantity": product.quantity,
+            }
+            return make_response(jsonify(product_dict), 200)
+        else:
+            return make_response(jsonify({"error": "Product not found"}),404)
+        
+    
 class Suppliers(Resource):
     # @jwt_required
     def get(self):
@@ -161,10 +196,14 @@ class SupplierById(Resource):
      # @jwt_required
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
+        db.session.delete(supplier)
+        db.session.commit()
+        return {'message': 'Supplier deleted successfully'}
         
 
         
 class Purchases(Resource):
+    #get all purchases
     # @jwt_required
     def get(self):
         purchases=[]
@@ -177,6 +216,21 @@ class Purchases(Resource):
             purchases.append(purchase_dict)
         return make_response(jsonify(purchases), 200)
             
+            
+class PurchaseById(Resource):
+     #get one purchases
+    # @jwt_required
+    def get(self, id):
+        purchase = Purchase.query.filter_by(id=id).first()
+        if purchase:
+            purchase_dict ={
+                "id": purchase.id,
+                "supplier_id": purchase.supplier_id,
+                "product_id": purchase.product_id
+            }
+            return make_response(jsonify(purchase_dict), 200)
+        else:
+            return make_response(jsonify({"error": "Purchase not found"}),404)
 
 
 
@@ -186,7 +240,11 @@ api.add_resource(Home, '/')
 # api.add_resource(UserLoginResource, '/login')
 api.add_resource(Suppliers, '/suppliers')
 api.add_resource(Purchases, '/purchases')
+api.add_resource(PurchaseById, '/purchases/<int:id>')
 api.add_resource(SupplierById, '/suppliers/<int:id>')
+api.add_resource(Products, '/products')
+api.add_resource(ProductById, '/products/<int:id>')
+
 
 
 if __name__ == '__main__':
