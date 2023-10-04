@@ -32,8 +32,20 @@ with app.app_context():
         product3 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
                            product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
                            type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
+        product4 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
+                           product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
+        product5 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
+                           product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
+        product6 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
+                           product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
+        product7 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
+                           product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
                            
-        product_list = [product1, product2, product3]
+        product_list = [product1, product2, product3,product4,product5,product6, product7]
         db.session.add_all(product_list)
         
         print("🦸‍♀️ Seeding suppliers...")
