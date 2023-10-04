@@ -16,6 +16,8 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 api = Api(app)
+app.config['JWT_SECRET_KEY'] = 'your_secret_key_here'
+jwt = JWTManager(app)
 
 #Home page backend
 class Home(Resource):
@@ -25,12 +27,16 @@ class Home(Resource):
         }
         return make_response(response_message, 200)
     
+# class Suppliers(Resource):
+#     def get(self):
+    
+        
     
 
 
 
 
-api.add_resource(Home, '/')
+# api.add_resource(Home, '/')
 
 if __name__ == '__main__':
     app.run(port=5555)

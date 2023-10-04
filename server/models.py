@@ -54,8 +54,8 @@ class Purchase(db.Model, SerializerMixin):
     product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     
     #relationships
-    product=db.relationship('Product', back_populates='products')
-    supplier=db.relationship('Supplier', back_populates='suppliers')
+    product=db.relationship('Product', back_populates='purchases')
+    supplier=db.relationship('Supplier', back_populates='purchases')
 
 class Shipping (db.Model, SerializerMixin):
     __tablename__='shippings'
@@ -67,7 +67,7 @@ class Shipping (db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
     #relationships
-    product=db.relationship('Product', back_populates ='products')
+    product=db.relationship('Product', back_populates ='shippings')
     
     
     
