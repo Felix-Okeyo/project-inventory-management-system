@@ -1,0 +1,50 @@
+{
+    "Suppliers": [
+      {
+        "id": 1,
+        "logo": "https://i.ytimg.com/vi/FzcfZyEhOoI/maxresdefault.jpg",
+        "name": "Apple",
+        "contact": "apple@apple.com"
+      },
+      {
+        "id": 2,
+        "logo": "https://media.gettyimages.com/id/103012503/photo/illustration-picture-shows-the-headquarters-of-us-information-technology-giant-hewlett-packard.jpg?s=612x612&w=gi&k=20&c=n3xjWY22vlR1FOvcvRifhJFhDXCPz5ewJW-a8vqKbS0=",
+        "name": "Hp",
+        "contact": "hp@gmail.com"
+      },
+      {
+        "id": 3,
+        "logo": "https://media.istockphoto.com/id/1310441327/photo/microsoft-france-headquarters-entrance-in-issy-les-moulineaux-near-paris.jpg?s=612x612&w=0&k=20&c=w4df4OwilAGtPb01aXv910ND85E9Vh0I8qZ4CuRbFqI=",
+        "name": "Microsoft",
+        "contact": "microsoft@microsoft.com"
+      },
+      {
+        "id": 4,
+        "logo": "https://thumbs.dreamstime.com/z/googleplex-google-headquarters-california-mountain-view-ca-usa-may-office-buildings-93111097.jpg",
+        "name": "Google",
+        "contact": "google@gmail.com"
+      },
+      {
+        "id": 5,
+        "logo": "https://c8.alamy.com/comp/2DA48RJ/huawei-headquarters-building-2DA48RJ.jpg",
+        "name": "Huawei",
+        "contact": "huawei@gmail.com"
+      },
+      {
+        "id": 6,
+        "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoBVMEwdKDUtMN4CiYTcMKf4UHb8cASDG2mmVPIbwP-Rtfw4kAzH5Vr6DaqWtw_ufjQ3A&usqp=CAU",
+        "name": "Samsung",
+        "contact": "samsung@gmail.com"
+      },
+      {
+        "id": 7,
+        "logo": "https://media.istockphoto.com/id/1166473961/photo/lenovo-group-limited-headquarters-located-in-silicon-valley.jpg?s=612x612&w=0&k=20&c=WjecflgRHam4UfWNFMyk9ness8byvYyEkcgc1iivzqc=",
+        "name": "lenovo",
+        "contact": "lenovo@gmail.com"
+      }
+     
+  
+     
+ 
+    ]
+  }

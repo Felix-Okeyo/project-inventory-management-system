@@ -1,5 +1,5 @@
 from app import app, db
-from models import User, Product, Supplier, Purchase, Shipping 
+from models import User, Product, Supplier, Shipping 
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 
@@ -11,7 +11,7 @@ with app.app_context():
         User.query.delete()
         Product.query.delete()
         Supplier.query.delete()
-        Purchase.query.delete()
+       
         Shipping.query.delete()
 
     def seed_data():
@@ -32,8 +32,20 @@ with app.app_context():
         product3 = Product(image="https://media.gettyimages.com/id/458405389/photo/lenovo-thinkpad-x201-notebook.jpg?s=612x612&w=gi&k=20&c=V9hldqn4eh0amsdIMWQxrbib8QoBe7FnBgwTPTHWVOk=",
                            product_name = "Lenovo ThinkPad X201 Notebook", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
                            type="Laptop", supplier_id= 3, quantity=7, minimum_stock =2)
+        product4 = Product(image="https://img.global.news.samsung.com/ca/wp-content/uploads/2023/02/Samsung-Galaxy-S23-Image_1-799x563.png",
+                           product_name = "Samsung Galaxy S23", description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Phone", supplier_id= 2, quantity=7, minimum_stock =2)
+        product5 = Product(image="https://www.apple.com/newsroom/images/product/watch/standard/Apple_watch-series7_hero_09142021_big.jpg.slideshow-xlarge_2x.jpg",
+                           product_name = 'Apple Watch Series', description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="watch", supplier_id= 1, quantity=7, minimum_stock =2)
+        product6 = Product(image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXxE-D2d9o-V4ZjlJrISI8V-uTgURtxkNhXOK4lL9shQ&s",
+                           product_name = 'Chromebook plus', description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="Laptop", supplier_id= 6, quantity=7, minimum_stock =2)
+        product7 = Product(image="https://www.trustedreviews.com/wp-content/uploads/sites/54/2021/07/Huawei-Vision-S-Celia-1024x683.jpg",
+                           product_name = 'Huawei Vision 3 smart tv', description = "UltraNav combines a TrackPoint and a large multi-gesture TouchPad for precise cursor control. The computer is powered by a dual-core 2.66GHz Intel Core i5-560M CPU, which can be overclocked to 3.2GHz thanks to Intel Turbo Boost",
+                           type="TV", supplier_id= 3, quantity=7, minimum_stock =2)
                            
-        product_list = [product1, product2, product3]
+        product_list = [product1, product2, product3,product4,product5,product6, product7]
         db.session.add_all(product_list)
         
         print("🦸‍♀️ Seeding suppliers...")
@@ -59,18 +71,24 @@ with app.app_context():
         shipping1 = Shipping(product_id = 1, status = "In-Stock")
         shipping2 = Shipping(product_id = 2, status = "Sold")
         shipping3 = Shipping(product_id = 3, status = "Ordered")
+        shipping4 = Shipping(product_id = 2, status = "In-Stock")
+        shipping5 = Shipping(product_id = 2, status = "Sold")
+        shipping6 = Shipping(product_id = 3, status = "Ordered")
+        shipping7 = Shipping(product_id = 1, status = "In-Stock")
+        shipping8 = Shipping(product_id = 2, status = "Sold")
+        shipping9 = Shipping(product_id = 3, status = "Ordered")
+        shipping10 = Shipping(product_id = 1, status = "In-Stock")
+        shipping11= Shipping(product_id = 2, status = "Sold")
+        shipping12 = Shipping(product_id = 3, status = "Ordered")
+        shipping13 = Shipping(product_id = 1, status = "In-Stock")
+        shipping14 = Shipping(product_id = 2, status = "Sold")
+        shipping15 = Shipping(product_id = 3, status = "Ordered")
         
-        shipping_list= [shipping1, shipping2, shipping3]
+        shipping_list= [shipping1, shipping2, shipping3, shipping4, shipping5, shipping6, shipping7, shipping8, shipping9, shipping10, shipping11, shipping12, shipping13]
         db.session.add_all(shipping_list)
         
         
-        print("🦸‍♀️ Seeding purchases...")
-        purchase1 = Purchase(supplier_id = 1, product_id=1)
-        purchase2 = Purchase(supplier_id = 2, product_id=2)
         
-        purchase_list= [purchase1, purchase2]
-        db.session.add_all(purchase_list)
-    
         
         db.session.commit()
 
