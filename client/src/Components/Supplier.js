@@ -17,7 +17,25 @@ function Supplier() {
   }, []);
 
   const addSupplier = (newSupplier) => {
-    setsuppliers([...suppliers, newSupplier]);
+    // Make a POST request to add a new supplier to the database
+    fetch('http://127.0.0.1:5555/suppliers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newSupplier), // Convert the newSupplier object to JSON
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response if needed
+        console.log(data);
+
+        // Add the new supplier to the local state
+        setsuppliers([...suppliers, data]);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (

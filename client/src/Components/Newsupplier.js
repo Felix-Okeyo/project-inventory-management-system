@@ -29,7 +29,7 @@ function NewSupplier({ addSupplier }){
     const newSupplier = {
       name: name, // Use lowercase attribute names
       contact: contact, // Use lowercase attribute names
-      image: image,
+      logo: image,
     };
     addSupplier(newSupplier);
     // Clear the input fields
@@ -86,6 +86,7 @@ function NewSupplier({ addSupplier }){
             required
           />
         </div>
+        
         <button className="button" type="submit">
           Add Supplier
         </button>

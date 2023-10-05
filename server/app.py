@@ -119,12 +119,13 @@ class Products(Resource):
                 "product_name": product.product_name,
                 "description": product.description,
                 "type": product.type,
+                "minimum_stock": product.minimum_stock,
                 "supplier": product.supplier_id,
                 "quantity": product.quantity,
             }
             products.append(product_dict)
         return make_response(jsonify(products), 200)
-
+         
 class ProductById(Resource):
     #@jwt_required
     #get one product by id from db
@@ -189,7 +190,57 @@ class Suppliers(Resource):
             }
             suppliers.append(supplier_dict)
         return make_response(jsonify(suppliers), 200)
+    def post(self):
+            data = request.get_json()
 
+            # Validate the incoming data, ensuring it contains the required fields
+            if 'logo' not in data or 'name' not in data or 'contact' not in data:
+                return {'message': 'Missing required fields for supplier'}, 400
+
+            # Create a new Supplier instance
+            new_supplier = Supplier(
+                logo=data['logo'],
+                name=data['name'],
+                contact=data['contact']
+            )
+            supplier_dict ={
+                "id": new_supplier.id,
+                "logo":new_supplier.logo,
+                "name": new_supplier.name,
+                "contact": new_supplier.contact
+            }
+            # Add the new supplier to the database
+            db.session.add(new_supplier)
+            db.session.commit()
+
+            # Respond with a success message
+            return make_response(jsonify(supplier_dict), 200)  
+    # def post(self):
+    #     data = request.get_json()
+
+    #     # Validate the incoming data, ensuring it contains the required fields
+    #     if 'image' not in data or 'product_name' not in data or 'description' not in data \
+    #             or 'type' not in data or 'minimum_stock' not in data or 'supplier_id' not in data \
+    #             or 'quantity' not in data:
+    #         return {'message': 'Missing required fields for product'}, 400
+
+    #     # Create a new Product instance
+    #     new_product = Product(
+    #         image=data['image'],
+    #         product_name=data['product_name'],
+    #         description=data['description'],
+    #         type=data['type'],
+    #         minimum_stock=data['minimum_stock'],
+    #         supplier_id=data['supplier_id'],
+    #         quantity=data['quantity']
+    #     )
+
+    #     # Add the new product to the database
+    #     db.session.add(new_product)
+    #     db.session.commit()
+
+    #     # Respond with a success message
+    #     return {'message': 'Product added successfully'}, 201
 class SupplierById(Resource):
     #@jwt_required
     #get one supplier from db
@@ -289,7 +340,7 @@ api.add_resource(Home, '/')
 #api.add_resource(UserRegistrationResource, '/register')
 #api.add_resource(UserLoginResource, '/login')
 #api.add_resource(UserResource, '/user/<int:id>')
-api.add_resource(Suppliers, '/suppliers', methods=['GET'])
+api.add_resource(Suppliers, '/suppliers', methods=['GET','POST'])
 
 api.add_resource(Purchases, '/purchases')
 api.add_resource(PurchaseById, '/purchases/<int:id>')
