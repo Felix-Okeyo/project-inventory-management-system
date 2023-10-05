@@ -22,11 +22,30 @@ function App() {
       });
   }, []);
 
-  const addProduct = (newProduct) => {
-    console.log(newProduct);
-    // Add the new product to the products state
-    setProducts([...products, newProduct]);
+  const addProduct = (newProduct, supplierId) => {
+    console.log(supplierId);
+  
+    // Make a POST request to add the product to the specific supplier
+    fetch(`http://127.0.0.1:5555/suppliers/${newProduct}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(supplierId), // Convert the newProduct object to JSON
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response if needed
+        console.log(data);
+  
+        // Add the new Product to the local state
+        setProducts([...products, data]);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
+  
   const onDeleteProduct = (productId) => {
     // Create a new array of products without the product with the given ID
     const updatedProducts = products.filter((product) => product.id !== productId);
@@ -38,7 +57,7 @@ function App() {
    
     if (type === "" || type === null) {
       //display all the transactions
-      fetch("http://127.0.0.1:5555/products")
+      fetch("https://api.npoint.io/e5115d936f381a580b81/products")
     .then((r) => r.json())
     .then((data) => {
       console.log("Fetched data:", data)
@@ -78,6 +97,7 @@ function App() {
             {/* Pass the addProduct function to the NewProduct component */}
             <NewProduct addProduct={addProduct} />
           </Route>
+          
         </Switch>
       </Router>
     </>
