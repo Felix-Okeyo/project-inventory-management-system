@@ -1,5 +1,5 @@
 from app import app, db
-from models import User, Product, Supplier, Purchase, Shipping 
+from models import User, Product, Supplier, Shipping 
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 
@@ -11,7 +11,7 @@ with app.app_context():
         User.query.delete()
         Product.query.delete()
         Supplier.query.delete()
-        Purchase.query.delete()
+       
         Shipping.query.delete()
 
     def seed_data():
@@ -76,13 +76,7 @@ with app.app_context():
         db.session.add_all(shipping_list)
         
         
-        print("🦸‍♀️ Seeding purchases...")
-        purchase1 = Purchase(supplier_id = 1, product_id=1)
-        purchase2 = Purchase(supplier_id = 2, product_id=2)
         
-        purchase_list= [purchase1, purchase2]
-        db.session.add_all(purchase_list)
-    
         
         db.session.commit()
 

@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity  
 from flask_cors import CORS
-from models import db, User, Product, Supplier, Purchase, Shipping 
+from models import db, User, Product, Supplier,  Shipping 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -172,9 +172,14 @@ class ProductById(Resource):
     #@jwt_required
     def delete (self, id):
         product = Product.query.filter_by(id=id).first()
-        db.session.delete(product)
-        db.session.commit()
-        return {'message': 'Product deleted successfully'}
+        if not product:
+          return {'message': 'Product not found'}, 404
+        else:
+            db.session.delete(product)
+            db.session.commit()
+            return {'message': 'Product deleted successfully'}
+        
+
         
     
 class Suppliers(Resource):
@@ -340,35 +345,35 @@ class SupplierById(Resource):
     #         return {'message': 'Supplier, its products, and purchases deleted successfully'}
     #     else:
     #         return make_response(jsonify({"error": "Supplier not found"}), 404)
-class Purchases(Resource):
-    #get all purchases
-    #@jwt_required
-    def get(self):
-        purchases=[]
-        for purchase in Purchase.query.all():
-            purchase_dict = {
-                "id": purchase.id,
-                "supplier_id": purchase.supplier_id,
-                "product_id": purchase.product_id
-            }
-            purchases.append(purchase_dict)
-        return make_response(jsonify(purchases), 200)
+# class Purchases(Resource):
+#     #get all purchases
+#     #@jwt_required
+#     def get(self):
+#         purchases=[]
+#         for purchase in Purchase.query.all():
+#             purchase_dict = {
+#                 "id": purchase.id,
+#                 "supplier_id": purchase.supplier_id,
+#                 "product_id": purchase.product_id
+#             }
+#             purchases.append(purchase_dict)
+#         return make_response(jsonify(purchases), 200)
             
             
-class PurchaseById(Resource):
-     #get one purchases
-    #@jwt_required
-    def get(self, id):
-        purchase = Purchase.query.filter_by(id=id).first()
-        if purchase:
-            purchase_dict ={
-                "id": purchase.id,
-                "supplier_id": purchase.supplier_id,
-                "product_id": purchase.product_id
-            }
-            return make_response(jsonify(purchase_dict), 200)
-        else:
-            return make_response(jsonify({"error": "Purchase not found"}),404)
+# class PurchaseById(Resource):
+#      #get one purchases
+#     #@jwt_required
+#     def get(self, id):
+#         purchase = Purchase.query.filter_by(id=id).first()
+#         if purchase:
+#             purchase_dict ={
+#                 "id": purchase.id,
+#                 "supplier_id": purchase.supplier_id,
+#                 "product_id": purchase.product_id
+#             }
+#             return make_response(jsonify(purchase_dict), 200)
+#         else:
+#             return make_response(jsonify({"error": "Purchase not found"}),404)
 
 class Shippings(Resource):
     #@jwt_required
@@ -393,8 +398,8 @@ api.add_resource(Home, '/')
 #api.add_resource(UserResource, '/user/<int:id>')
 api.add_resource(Suppliers, '/suppliers', methods=['GET','POST'])
 
-api.add_resource(Purchases, '/purchases')
-api.add_resource(PurchaseById, '/purchases/<int:id>')
+# api.add_resource(Purchases, '/purchases')
+# api.add_resource(PurchaseById, '/purchases/<int:id>')
 api.add_resource(SupplierById, '/suppliers/<int:id>',methods=['POST'])
 api.add_resource(Products, '/products', methods=['GET'])
 api.add_resource(ProductById, '/products/<int:id>')

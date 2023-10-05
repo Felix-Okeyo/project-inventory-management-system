@@ -31,10 +31,8 @@ class Product(db.Model, SerializerMixin):
     quantity=db.Column(db.Integer, nullable=False)
     minimum_stock=db.Column(db.Integer, nullable=False)
     
-    #relationships
-    # heroes_powers = db.relationship('Hero_powers', back_populates = 'hero')
-    purchases= db.relationship('Purchase', back_populates = 'product')
-    shippings= db.relationship('Shipping', back_populates = 'product')
+  
+    shippings = db.relationship('Shipping', back_populates='product', cascade='all, delete-orphan')
 
 class Supplier(db.Model, SerializerMixin):
     __tablename__ = 'suppliers'
@@ -44,19 +42,18 @@ class Supplier(db.Model, SerializerMixin):
     name=db.Column(db.String(255), nullable=False)
     contact=db.Column(db.String(255), nullable=False)
     
-    #relationships
-    purchases=db.relationship('Purchase', back_populates ='supplier')
     
-class Purchase(db.Model, SerializerMixin):
-    __tablename__='purchases'
     
-    id=db.Column(db.Integer, primary_key=True)
-    supplier_id=db.Column(db.Integer,  db.ForeignKey('suppliers.id'), nullable=True)
-    product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=True)
+# class Purchase(db.Model, SerializerMixin):
+#     __tablename__='purchases'
     
-    #relationships
-    product=db.relationship('Product', back_populates='purchases')
-    supplier=db.relationship('Supplier', back_populates='purchases')
+#     id=db.Column(db.Integer, primary_key=True)
+#     supplier_id=db.Column(db.Integer,  db.ForeignKey('suppliers.id'), nullable=True)
+#     product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=True)
+    
+#     #relationships
+#     product=db.relationship('Product', back_populates='purchases')
+#     supplier=db.relationship('Supplier', back_populates='purchases')
 
 class Shipping (db.Model, SerializerMixin):
     __tablename__='shippings'
