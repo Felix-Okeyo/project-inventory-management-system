@@ -74,6 +74,7 @@ class UserLoginResource(Resource):
 class UserResource(Resource):
     @jwt_required()
     def get(self, user_id):
+        
         user = User.query.get_or_404(user_id)
         return user.as_dict()
 
@@ -107,9 +108,12 @@ class Home(Resource):
         }
         return make_response(response_message, 200)
     
-class Products(Resource):
+class GetProducts(Resource):
     @jwt_required
     def get(self):
+        
+        print(get_jwt_identity(), '-'*30)
+        
         products = []
         for product in Product.query.all():
             product_dict ={
@@ -172,9 +176,12 @@ class ProductById(Resource):
         return {'message': 'Product deleted successfully'}
         
     
-class Suppliers(Resource):
+class GetSuppliers(Resource):
     @jwt_required
     def get(self):
+        
+        print(get_jwt_identity(), '-'*30)
+        
         suppliers=[]
         for supplier in Supplier.query.all():
             supplier_dict ={
@@ -234,10 +241,14 @@ class SupplierById(Resource):
         
 
         
-class Purchases(Resource):
+class GetPurchases(Resource):
     #get all purchases
     @jwt_required
     def get(self):
+        
+        print(get_jwt_identity(), '-'*30)
+        
+        
         purchases=[]
         for purchase in Purchase.query.all():
             purchase_dict = {
@@ -264,10 +275,13 @@ class PurchaseById(Resource):
         else:
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
-class Shippings(Resource):
+class GetShippings(Resource):
     @jwt_required
-    #get all shippings 
+    # get all shippings 
     def get(self):
+        
+        print(get_jwt_identity(), '-'*30)
+          
         shippings = []
         for shipping in Shipping.query.all():
             shipping_dict = {
@@ -285,13 +299,13 @@ api.add_resource(Home, '/')
 api.add_resource(UserRegistrationResource, '/register')
 api.add_resource(UserLoginResource, '/login')
 api.add_resource(UserResource, '/user/<int:id>')
-api.add_resource(Suppliers, '/suppliers')
-api.add_resource(Purchases, '/purchases')
+api.add_resource(GetSuppliers, '/suppliers')
+api.add_resource(GetPurchases, '/purchases')
 api.add_resource(PurchaseById, '/purchases/<int:id>')
 api.add_resource(SupplierById, '/suppliers/<int:id>')
-api.add_resource(Products, '/products')
+api.add_resource(GetProducts, '/products')
 api.add_resource(ProductById, '/products/<int:id>')
-api.add_resource(Shippings, '/shippings')
+api.add_resource(GetShippings, '/shippings')
 
 
 if __name__ == '__main__':
