@@ -377,7 +377,7 @@ api.add_resource(Home, '/')
 #api.add_resource(UserRegistrationResource, '/register')
 #api.add_resource(UserLoginResource, '/login')
 #api.add_resource(UserResource, '/user/<int:id>')
-api.add_resource(Suppliers, '/suppliers', methods=['GET'])
+api.add_resource(Suppliers, '/suppliers', methods=['GET','POST'])
 
 # api.add_resource(Purchases, '/purchases')
 # api.add_resource(PurchaseById, '/purchases/<int:id>')
