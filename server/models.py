@@ -51,8 +51,8 @@ class Purchase(db.Model, SerializerMixin):
     __tablename__='purchases'
     
     id=db.Column(db.Integer, primary_key=True)
-    supplier_id=db.Column(db.Integer,  db.ForeignKey('suppliers.id'), nullable=False)
-    product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    supplier_id=db.Column(db.Integer,  db.ForeignKey('suppliers.id'), nullable=True)
+    product_id=db.Column(db.Integer, db.ForeignKey('products.id'), nullable=True)
     
     #relationships
     product=db.relationship('Product', back_populates='purchases')

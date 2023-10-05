@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 const SupplierList= ({ suppliers }) => {
@@ -22,6 +23,9 @@ const SupplierList= ({ suppliers }) => {
               <div className='cards__item__info'>
                 <h5 className='cards__item__text'>{suppier.name}</h5>
                 <p>{suppier.contact}</p>
+                <Link to={`/new-product/${suppier.id}`} className="button">
+                Add Product
+                </Link>
               </div>
             </div>
           ))}

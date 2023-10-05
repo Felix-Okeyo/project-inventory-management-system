@@ -256,6 +256,40 @@ class SupplierById(Resource):
             return make_response(jsonify(supplier_dict), 200)
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
+    def post(self, id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('product_name', type=str, required=True)
+        parser.add_argument('description', type=str, required=True)
+        parser.add_argument('quantity', type=int, required=True)
+
+        args = parser.parse_args()
+
+        # Check if the supplier exists
+        supplier = Supplier.query.get(id)
+        if not supplier:
+            return {'message': 'Supplier not found'}, 404
+
+        # Create a new Product instance and associate it with the supplier
+        new_product = Product(
+            product_name=args['product_name'],
+            description=args['description'],
+            quantity=args['quantity'],
+            supplier_id=id  # Set the supplier_id to the ID from the URL
+        )
+        product_dict ={
+                "id": new_product.id,
+                "image": new_product.image,
+                "description": new_product.description,
+                "type": new_product.type,
+                "supplier": new_product.supplier_id,
+                "quantity": new_product.quantity,
+                "minimum_stock": new_product.minimum_stock,
+            }
+
+        # Add the new product to the database
+        db.session.add(new_product)
+        db.session.commit()    
+        return  make_response(jsonify(product_dict), 200)
         
     #edit supplier details 
     #@jwt_required
@@ -280,15 +314,32 @@ class SupplierById(Resource):
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
-    #@jwt_required
-    def delete (self, id):
-        supplier = Supplier.query.filter_by(id=id).first()
-        db.session.delete(supplier)
-        db.session.commit()
-        return {'message': 'Supplier deleted successfully'}
-        
+    # def delete(self, id):
+    #     supplier = Supplier.query.filter_by(id=id).first()
 
-        
+    #     if supplier:
+    #         # Fetch the products associated with the supplier
+    #         products = Product.query.filter_by(supplier_id=id).all()
+
+    #         # Delete the products
+    #         for product in products:
+    #             db.session.delete(product)
+
+    #         # Fetch the purchases associated with the supplier
+    #         purchases = Purchase.query.filter_by(supplier_id=id).all()
+
+    #         # Update the product_id to NULL for purchases
+    #         for purchase in purchases:
+    #             purchase.product_id = None  # Set product_id to NULL
+    #             db.session.delete(purchase)
+
+    #         # Delete the supplier
+    #         db.session.delete(supplier)
+    #         db.session.commit()
+
+    #         return {'message': 'Supplier, its products, and purchases deleted successfully'}
+    #     else:
+    #         return make_response(jsonify({"error": "Supplier not found"}), 404)
 class Purchases(Resource):
     #get all purchases
     #@jwt_required
@@ -344,7 +395,7 @@ api.add_resource(Suppliers, '/suppliers', methods=['GET','POST'])
 
 api.add_resource(Purchases, '/purchases')
 api.add_resource(PurchaseById, '/purchases/<int:id>')
-api.add_resource(SupplierById, '/suppliers/<int:id>')
+api.add_resource(SupplierById, '/suppliers/<int:id>',methods=['POST'])
 api.add_resource(Products, '/products', methods=['GET'])
 api.add_resource(ProductById, '/products/<int:id>')
 api.add_resource(Shippings, '/shippings')

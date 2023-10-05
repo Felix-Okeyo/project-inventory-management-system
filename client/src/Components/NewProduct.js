@@ -1,16 +1,24 @@
 import React,{useState} from "react";
+import { useParams } from "react-router-dom";
 import './Form.css'
 
 function NewProduct({ addProduct }){
+  const { supplierId } = useParams(); // Get the supplierId from the URL params
   const [product_name, setProduct_name] = useState("");
   const [type, setType] = useState("");
   const [image, setImage] = useState("");
   const [quantity, setQuantity] = useState("");
   const [minimum_stock, setMinimum_stock] = useState("");
+  const [description, setDescription] = useState("");
+
+
 
 
   const handleProduct_nameChange = (event) => {
     setProduct_name(event.target.value);
+  };
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
   const handleQuantityChange= (event) => {
     setQuantity(event.target.value);
@@ -38,13 +46,15 @@ function NewProduct({ addProduct }){
       type: type, // Use lowercase attribute product_names
       image: image,
       quantity: quantity,
-      minimum_stock: minimum_stock
+      minimum_stock: minimum_stock,
+      description: description
     };
-    addProduct(newProduct);
+    addProduct(supplierId,newProduct);
     // Clear the input fields
     setProduct_name("");
     setType("");
     setImage("");
+    setDescription("");
   };
   
 
@@ -65,6 +75,18 @@ function NewProduct({ addProduct }){
             name="product_name"
             value={product_name}
             onChange={handleProduct_nameChange}
+            required
+          />
+          <label className="label" htmlFor="product_name">
+           Description:
+          </label>
+          <input
+            className="input-field"
+            type="text"
+            id="product_name"
+            name="product_name"
+            value={description}
+            onChange={handleDescriptionChange}
             required
           />
         </div>
