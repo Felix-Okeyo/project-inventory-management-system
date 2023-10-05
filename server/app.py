@@ -8,16 +8,14 @@ from models import db, User, Product, Supplier, Purchase, Shipping
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
-
-migrate = Migrate(app, db)
 db.init_app(app)
+migrate = Migrate(app, db)
 
 api = Api(app)
+app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 jwt = JWTManager(app)
 
-app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
 #handle registration process
 class UserRegistrationResource(Resource):
@@ -188,7 +186,7 @@ class ProductById(Resource):
         
     
 class GetSuppliers(Resource):
-    # @jwt_required
+    @jwt_required
     def get(self):
         
         print(get_jwt_identity(), '-'*30)
