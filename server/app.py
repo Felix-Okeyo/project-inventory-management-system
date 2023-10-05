@@ -8,16 +8,16 @@ from models import db, User, Product, Supplier, Purchase, Shipping
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'your_secret_key_here'
-jwt = JWTManager(app)
+app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
+
 
 migrate = Migrate(app, db)
-
 db.init_app(app)
 
 api = Api(app)
-app.config['JWT_SECRET_KEY'] = 'your_secret_key_here'
 jwt = JWTManager(app)
+
+app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
 #handle registration process
 class UserRegistrationResource(Resource):
@@ -73,14 +73,24 @@ class UserLoginResource(Resource):
         
 class UserResource(Resource):
     @jwt_required()
-    def get(self, user_id):
+    def get(self, id):
         
-        user = User.query.get_or_404(user_id)
-        return user.as_dict()
-
-    @jwt_required()
-    def put(self, user_id):
-        user = User.query.get_or_404(user_id)
+        user = User.query.get_or_404(id)
+        if user:
+            user_dict = {
+                "id": user.id,
+                "first_name": user.first_name,
+                "second_name": user.second_name,
+                "username": user.username,
+                "email": user.email,
+                "password": user.password   
+            }
+            return make_response(jsonify(user_dict), 200)
+        else:
+            return make_response(jsonify({"error": "User not found"}),404)
+   
+    def put(self, id):
+        user = User.query.get_or_404(id)
         parser = reqparse.RequestParser()
         parser.add_argument('username', type=str)
         parser.add_argument('email', type=str)
@@ -93,9 +103,9 @@ class UserResource(Resource):
         db.session.commit()
         return {'message': 'User updated successfully'}
 
-    @jwt_required()
-    def delete(self, user_id):
-        user = User.query.get_or_404(user_id)
+   
+    def delete(self, id):
+        user = User.query.get_or_404(id)
         db.session.delete(user)
         db.session.commit()
         return {'message': 'User deleted successfully'}        
@@ -109,16 +119,17 @@ class Home(Resource):
         return make_response(response_message, 200)
     
 class GetProducts(Resource):
-    @jwt_required
+    # @jwt_required
     def get(self):
         
-        print(get_jwt_identity(), '-'*30)
+        # print(get_jwt_identity(), '-'*30)
         
         products = []
         for product in Product.query.all():
             product_dict ={
                 "id": product.id,
                 "image": product.image,
+                "product_name": product.product_name,
                 "description": product.description,
                 "type": product.type,
                 "supplier": product.supplier_id,
@@ -128,7 +139,7 @@ class GetProducts(Resource):
         return make_response(jsonify(products), 200)
 
 class ProductById(Resource):
-    @jwt_required
+    # @jwt_required
     #get one product by id from db
     def get(self, id):
         product = Product.query.filter_by(id=id).first()
@@ -144,7 +155,7 @@ class ProductById(Resource):
             return make_response(jsonify(product_dict), 200)
         else:
             return make_response(jsonify({"error": "Product not found"}),404)
-    @jwt_required
+    # @jwt_required
     def patch(self, id):
         product = Product.query.filter_by(id=id).first()
         data = request.get_json()
@@ -168,7 +179,7 @@ class ProductById(Resource):
         else:
             return make_response(jsonify({"error": "Product not found"}),404)
         
-    @jwt_required
+    # @jwt_required
     def delete (self, id):
         product = Product.query.filter_by(id=id).first()
         db.session.delete(product)
@@ -177,7 +188,7 @@ class ProductById(Resource):
         
     
 class GetSuppliers(Resource):
-    @jwt_required
+    # @jwt_required
     def get(self):
         
         print(get_jwt_identity(), '-'*30)
@@ -194,7 +205,7 @@ class GetSuppliers(Resource):
         return make_response(jsonify(suppliers), 200)
 
 class SupplierById(Resource):
-    @jwt_required
+    # @jwt_required
     #get one supplier from db
     def get(self, id):
         supplier = Supplier.query.filter_by(id=id).first()
@@ -210,7 +221,7 @@ class SupplierById(Resource):
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
     #edit supplier details 
-    @jwt_required
+    # @jwt_required
     def patch(self, id):
         supplier = Supplier.query.filter_by(id=id).first()
         data = request.get_json()
@@ -232,7 +243,7 @@ class SupplierById(Resource):
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
-    @jwt_required
+    # @jwt_required
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
         db.session.delete(supplier)
@@ -243,7 +254,7 @@ class SupplierById(Resource):
         
 class GetPurchases(Resource):
     #get all purchases
-    @jwt_required
+    # @jwt_required
     def get(self):
         
         print(get_jwt_identity(), '-'*30)
@@ -262,7 +273,7 @@ class GetPurchases(Resource):
             
 class PurchaseById(Resource):
      #get one purchases
-    @jwt_required
+    # @jwt_required
     def get(self, id):
         purchase = Purchase.query.filter_by(id=id).first()
         if purchase:
@@ -276,11 +287,11 @@ class PurchaseById(Resource):
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
 class GetShippings(Resource):
-    @jwt_required
+    # @jwt_required
     # get all shippings 
     def get(self):
         
-        print(get_jwt_identity(), '-'*30)
+        # print(get_jwt_identity(), '-'*30)
           
         shippings = []
         for shipping in Shipping.query.all():
@@ -298,7 +309,7 @@ class GetShippings(Resource):
 api.add_resource(Home, '/')
 api.add_resource(UserRegistrationResource, '/register')
 api.add_resource(UserLoginResource, '/login')
-api.add_resource(UserResource, '/user/<int:id>')
+api.add_resource(UserResource, '/users/<int:id>')
 api.add_resource(GetSuppliers, '/suppliers')
 api.add_resource(GetPurchases, '/purchases')
 api.add_resource(PurchaseById, '/purchases/<int:id>')
