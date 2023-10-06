@@ -122,7 +122,7 @@ class Home(Resource):
         return make_response(response_message, 200)
     
 class GetProducts(Resource):
-    # @jwt_required
+    @jwt_required()
     def get(self):
         
         # print(get_jwt_identity(), '-'*30)
@@ -140,9 +140,28 @@ class GetProducts(Resource):
             }
             products.append(product_dict)
         return make_response(jsonify(products), 200)
+    
+    @jwt_required()
+    def post(self):
+        inputdata = request.get_json()
+        
+        new_product = Product(
+            image = inputdata['image'],
+            product_name = inputdata['product_name'],
+            description = inputdata['description'],
+            type = inputdata['type'],
+            supplier_id = inputdata['supplier_id'],
+            quantity = inputdata['quantity'],
+            minimum_stock = inputdata['minimum_stock']                                     
+        )
+        
+        db.session.add(new_product)
+        db.session.commit()
+        
+        return make_response(jsonify(new_product), 200)   
 
 class ProductById(Resource):
-    # @jwt_required
+    @jwt_required()
     #get one product by id from db
     def get(self, id):
         product = Product.query.filter_by(id=id).first()
@@ -158,7 +177,7 @@ class ProductById(Resource):
             return make_response(jsonify(product_dict), 200)
         else:
             return make_response(jsonify({"error": "Product not found"}),404)
-    # @jwt_required
+    @jwt_required()
     def patch(self, id):
         product = Product.query.filter_by(id=id).first()
         data = request.get_json()
@@ -182,7 +201,7 @@ class ProductById(Resource):
         else:
             return make_response(jsonify({"error": "Product not found"}),404)
         
-    # @jwt_required
+    @jwt_required()
     def delete (self, id):
         product = Product.query.filter_by(id=id).first()
         db.session.delete(product)
@@ -207,7 +226,7 @@ class GetSuppliers(Resource):
         return make_response(jsonify(suppliers), 200)
 
 class SupplierById(Resource):
-    # @jwt_required
+    @jwt_required()
     #get one supplier from db
     def get(self, id):
         supplier = Supplier.query.filter_by(id=id).first()
@@ -223,7 +242,7 @@ class SupplierById(Resource):
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
     #edit supplier details 
-    # @jwt_required
+    @jwt_required()
     def patch(self, id):
         supplier = Supplier.query.filter_by(id=id).first()
         data = request.get_json()
@@ -245,7 +264,7 @@ class SupplierById(Resource):
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
         
-    # @jwt_required
+    @jwt_required()
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
         db.session.delete(supplier)
