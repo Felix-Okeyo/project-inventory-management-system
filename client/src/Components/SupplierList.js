@@ -10,9 +10,6 @@ const SupplierList= ({ suppliers }) => {
   return (
     <div className='Suppliers'>
       
-     
-     
-      
       <div className='cardiis ' >
         
           {suppliers.map((suppier) => (
