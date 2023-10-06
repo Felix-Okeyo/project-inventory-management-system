@@ -64,12 +64,12 @@ with app.app_context():
         db.session.add_all(shipping_list)
         
         
-        print("🦸‍♀️ Seeding purchases...")
-        purchase1 = Purchase(supplier_id = 1, product_id=1)
-        purchase2 = Purchase(supplier_id = 2, product_id=2)
+        # print("🦸‍♀️ Seeding purchases...")
+        # purchase1 = Purchase(supplier_id = 1, product_id=1)
+        # purchase2 = Purchase(supplier_id = 2, product_id=2)
         
-        purchase_list= [purchase1, purchase2]
-        db.session.add_all(purchase_list)
+        # purchase_list= [purchase1, purchase2]
+        # db.session.add_all(purchase_list)
     
         
         db.session.commit()
