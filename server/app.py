@@ -8,12 +8,12 @@ from models import db, User, Product, Supplier, Purchase, Shipping
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
 db.init_app(app)
 migrate = Migrate(app, db)
 
 api = Api(app)
-app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 jwt = JWTManager(app)
 
 
@@ -52,6 +52,13 @@ class UserRegistrationResource(Resource):
             'message': 'User registered successfully',
             'access_token': access_token
         }, 201
+        
+#testing the JWT authentication separately
+class TestJWT(Resource):
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()
+        return {'user_id': current_user}
 
 #handle the login requests
 class UserLoginResource(Resource):
@@ -72,7 +79,6 @@ class UserLoginResource(Resource):
 class UserResource(Resource):
     @jwt_required()
     def get(self, id):
-        
         user = User.query.get_or_404(id)
         if user:
             user_dict = {
@@ -107,7 +113,6 @@ class UserResource(Resource):
         db.session.delete(user)
         db.session.commit()
         return {'message': 'User deleted successfully'}        
-
 
 class Home(Resource):
     def get(self):
@@ -183,10 +188,9 @@ class ProductById(Resource):
         db.session.delete(product)
         db.session.commit()
         return {'message': 'Product deleted successfully'}
-        
-    
+          
 class GetSuppliers(Resource):
-    @jwt_required
+    @jwt_required()
     def get(self):
         
         print(get_jwt_identity(), '-'*30)
@@ -247,12 +251,10 @@ class SupplierById(Resource):
         db.session.delete(supplier)
         db.session.commit()
         return {'message': 'Supplier deleted successfully'}
-        
-
-        
+              
 class GetPurchases(Resource):
     #get all purchases
-    # @jwt_required
+    @jwt_required()
     def get(self):
         
         print(get_jwt_identity(), '-'*30)
@@ -267,11 +269,10 @@ class GetPurchases(Resource):
             }
             purchases.append(purchase_dict)
         return make_response(jsonify(purchases), 200)
-            
-            
+                     
 class PurchaseById(Resource):
      #get one purchases
-    # @jwt_required
+    @jwt_required()
     def get(self, id):
         purchase = Purchase.query.filter_by(id=id).first()
         if purchase:
@@ -285,7 +286,7 @@ class PurchaseById(Resource):
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
 class GetShippings(Resource):
-    # @jwt_required
+    @jwt_required()
     # get all shippings 
     def get(self):
         
@@ -307,6 +308,7 @@ class GetShippings(Resource):
 api.add_resource(Home, '/')
 api.add_resource(UserRegistrationResource, '/register')
 api.add_resource(UserLoginResource, '/login')
+api.add_resource(TestJWT, '/testjwt')
 api.add_resource(UserResource, '/users/<int:id>')
 api.add_resource(GetSuppliers, '/suppliers')
 api.add_resource(GetPurchases, '/purchases')
