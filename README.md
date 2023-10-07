@@ -27,15 +27,15 @@ This project sought to achieve the following:
 
 ### Frontend
 
-- [React.js](https://img.shields.io/badge/react-v18.2.0-blue)
-- [React Router](https://img.shields.io/badge/react%20router-v5-blue)
+![React.js](https://img.shields.io/badge/react-v18.2.0-blue)
+![React Router](https://img.shields.io/badge/react%20router-v5-blue)
 
 ### Backend
 
 ![python version](https://img.shields.io/badge/python-3.10.12+-blue.svg)
 ![pytest version](https://img.shields.io/badge/pytest-7.1.3+-cyan.svg)
 ![sqlalchemy version](https://img.shields.io/badge/sqlalchemy-2.0%2B-blue.svg)
-
+![Flask](https://img.shields.io/badge/Flask-v3.0.3-blue)
 
 ### Landing page
 This page contains a brief description of the inventory management system. It contains the body and footer which contains the contact details.
