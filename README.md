@@ -56,8 +56,8 @@ Contans a table which has the id of the product and the status of the product.
 ## Authors & License
 
 Authored by :
-[Joy Anyango](https://github.com/JOY19ANYANGO).
-[Felix Okeyo](https://github.com/Felix-Okeyo)
+* [Joy Anyango](https://github.com/JOY19ANYANGO).
+* [Felix Okeyo](https://github.com/Felix-Okeyo)
 
 Licensed under the [MIT](https://choosealicense.com/licenses/mit/)
 
