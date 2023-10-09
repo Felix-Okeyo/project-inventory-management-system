@@ -141,24 +141,6 @@ class GetProducts(Resource):
             products.append(product_dict)
         return make_response(jsonify(products), 200)
     
-    @jwt_required()
-    def post(self):
-        inputdata = request.get_json()
-        
-        new_product = Product(
-            image = inputdata['image'],
-            product_name = inputdata['product_name'],
-            description = inputdata['description'],
-            type = inputdata['type'],
-            supplier_id = inputdata['supplier_id'],
-            quantity = inputdata['quantity'],
-            minimum_stock = inputdata['minimum_stock']                                     
-        )
-        
-        db.session.add(new_product)
-        db.session.commit()
-        
-        return make_response(jsonify(new_product), 200)   
 
 class ProductById(Resource):
     @jwt_required()
@@ -263,7 +245,47 @@ class SupplierById(Resource):
             return response_body, 201
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
-        
+    @jwt_required()
+    def post(self, id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('product_name', type=str, required=True)
+        parser.add_argument('image', type=str, required=True)
+        parser.add_argument('description', type=str, required=True)
+        parser.add_argument('quantity', type=int, required=True)
+        parser.add_argument('minimum_stock', type=int, required=True)
+        parser.add_argument('type', type=str, required=True)
+        args = parser.parse_args()
+
+        # Check if the supplier exists
+        supplier = Supplier.query.filter_by(id=id).first()
+        if not supplier:
+            return {'message': 'Supplier not found'}, 404
+
+        # Create a new Product instance and associate it with the supplier
+        new_product = Product(
+            product_name=args['product_name'],
+            description=args['description'],
+            quantity=args['quantity'],
+            minimum_stock=args['minimum_stock'],
+            image=args['image'],
+            type=args['type'],
+            supplier_id=id  # Set the supplier_id to the ID from the URL
+        )
+        product_dict ={
+                "id": new_product.id,
+                "image": new_product.image,
+                "product_name": new_product.product_name,
+                "description": new_product.description,
+                "type": new_product.type,
+                "minimum_stock": new_product.minimum_stock,
+                "supplier": new_product.supplier_id,
+                "quantity": new_product.quantity,
+            }
+
+        # Add the new product to the database
+        db.session.add(new_product)
+        db.session.commit()    
+        return  make_response(jsonify(product_dict), 200)    
     @jwt_required()
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
