@@ -33,7 +33,7 @@ class UserRegistrationResource(Resource):
             return {'message': 'Username already exists'}, 400
         if User.query.filter_by(email=args['email']).first() is not None:
             return {'message': 'Email already exists'}, 400
-
+        #Navigate to the login page
         # Create a new User instance and add it to the database
         new_user = User(
             username=args['username'],
@@ -117,7 +117,7 @@ class UserResource(Resource):
 class Home(Resource):
     def get(self):
         response_message = {
-            "message": "Welcome to the FuJi Store Inventory Management System API"
+            "message": "Welcome to the JFx Store Inventory Management System API"
         }
         return make_response(response_message, 200)
     
