@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity  
-
+from flask_cors import CORS
 from models import db, User, Product, Supplier, Purchase, Shipping 
 
 app = Flask(__name__)
@@ -14,6 +14,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 api = Api(app)
+CORS(app)
 jwt = JWTManager(app)
 
 
@@ -122,7 +123,7 @@ class Home(Resource):
         return make_response(response_message, 200)
     
 class GetProducts(Resource):
-    @jwt_required()
+    
     def get(self):
         
         # print(get_jwt_identity(), '-'*30)
@@ -206,7 +207,31 @@ class GetSuppliers(Resource):
             }
             suppliers.append(supplier_dict)
         return make_response(jsonify(suppliers), 200)
+    def post(self):
+            data = request.get_json()
 
+            # Validate the incoming data, ensuring it contains the required fields
+            if 'logo' not in data or 'name' not in data or 'contact' not in data:
+                return {'message': 'Missing required fields for supplier'}, 400
+
+            # Create a new Supplier instance
+            new_supplier = Supplier(
+                logo=data['logo'],
+                name=data['name'],
+                contact=data['contact']
+            )
+            supplier_dict ={
+                "id": new_supplier.id,
+                "logo":new_supplier.logo,
+                "name": new_supplier.name,
+                "contact": new_supplier.contact
+            }
+            # Add the new supplier to the database
+            db.session.add(new_supplier)
+            db.session.commit()
+
+            # Respond with a success message
+            return make_response(jsonify(supplier_dict), 200)  
 class SupplierById(Resource):
     @jwt_required()
     #get one supplier from db
@@ -327,7 +352,7 @@ class PurchaseById(Resource):
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
 class GetShippings(Resource):
-    @jwt_required()
+    
     # get all shippings 
     def get(self):
         
