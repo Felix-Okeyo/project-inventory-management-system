@@ -7,7 +7,7 @@ function Outgoing() {
   
 //fetch the transcations
 useEffect(() => {
-  fetch("http://127.0.0.1:5555/shippings")
+  fetch("https://inventory-ms-server-api.onrender.com/shippings")
     .then((r) => r.json())
     .then((data) => {
       console.log("Fetched data:", data)
