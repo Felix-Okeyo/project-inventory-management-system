@@ -8,7 +8,7 @@ function Supplier({access_token,headers}) {
   const [showNewSupplier, setShowNewSupplier] = useState(false); // State variable to control the visibility of NewSupplier
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/suppliers',{  method: 'GET', 
+    fetch('https://inventory-ms-server-api.onrender.com/suppliers',{  method: 'GET', 
     headers: headers,
   })
       .then((r) => r.json())
@@ -20,7 +20,7 @@ function Supplier({access_token,headers}) {
 
   const addSupplier = (newSupplier) => {
     // Make a POST request to add a new supplier to the database
-    fetch('http://127.0.0.1:5555/suppliers', {
+    fetch('https://inventory-ms-server-api.onrender.com/suppliers', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${access_token}`,

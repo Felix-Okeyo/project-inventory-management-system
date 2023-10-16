@@ -29,11 +29,9 @@ function App() {
   }; 
   console.log(headers);
   useEffect(() => {
-    // Fetch products only when authenticated
-    
-      fetch('http://127.0.0.1:5555/products',{  method: 'GET', 
-      headers: headers,
-    })
+    fetch('https://inventory-ms-server-api.onrender.com/products',{  method: 'GET', 
+    headers: headers,
+  })
         .then((r) => r.json())
         .then((data) => {
           setProducts(data);
@@ -48,7 +46,7 @@ function App() {
     console.log(supplierId);
 
     // Make a POST request to add the product to the specific supplier
-    fetch(`http://127.0.0.1:5555/suppliers/${newProduct}`, {
+    fetch(`https://inventory-ms-server-api.onrender.com/suppliers/${newProduct}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -80,7 +78,7 @@ function App() {
   const onSearch = (type) => {
     if (type === "" || type === null) {
       // Display all the transactions
-      fetch("http://127.0.0.1:5555/products",{  method: 'GET', 
+      fetch("https://inventory-ms-server-api.onrender.com/products",{  method: 'GET', 
       headers: headers,
     })
         .then((r) => r.json())
@@ -100,7 +98,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    fetch('http://127.0.0.1:5555/login', {
+    fetch('https://inventory-ms-server-api.onrender.com/login', {
   method: 'POST',
   headers: {
    
@@ -133,7 +131,7 @@ function App() {
   const handleSignUp= async (e) => {
     e.preventDefault();
 
-    fetch('http://127.0.0.1:5555/register', {
+    fetch('https://inventory-ms-server-api.onrender.com/register', {
   method: 'POST',
   headers: {
    
