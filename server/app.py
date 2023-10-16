@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity  
-
+from flask_cors import CORS 
 from models import db, User, Product, Supplier, Purchase, Shipping 
 
 app = Flask(__name__)
@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
 db.init_app(app)
+CORS(app)
 migrate = Migrate(app, db)
 
 api = Api(app)
