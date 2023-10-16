@@ -9,10 +9,12 @@ Flask-Migrate
 Flask-RESTful
 Flask-SQLAlchemy==3.0.2
 greenlet
+gunicorn
 itsdangerous
 Jinja2
 Mako
 MarkupSafe
+packaging
 PyJWT
 pytz
 six
