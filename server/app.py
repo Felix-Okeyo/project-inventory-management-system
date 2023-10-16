@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_migrate import Migrate
 from flask_restful import Api, Resource, reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity  
-from flask_cors import CORS 
+from flask_cors import CORS
 from models import db, User, Product, Supplier, Purchase, Shipping 
 
 app = Flask(__name__)
@@ -11,10 +11,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'the-key-is-secret'
 
 db.init_app(app)
-CORS(app)
 migrate = Migrate(app, db)
 
 api = Api(app)
+CORS(app)
 jwt = JWTManager(app)
 
 
@@ -34,7 +34,7 @@ class UserRegistrationResource(Resource):
             return {'message': 'Username already exists'}, 400
         if User.query.filter_by(email=args['email']).first() is not None:
             return {'message': 'Email already exists'}, 400
-        #Navigate to the login page
+
         # Create a new User instance and add it to the database
         new_user = User(
             username=args['username'],
@@ -118,12 +118,12 @@ class UserResource(Resource):
 class Home(Resource):
     def get(self):
         response_message = {
-            "message": "Welcome to the JFx Store Inventory Management System API"
+            "message": "Welcome to the FuJi Store Inventory Management System API"
         }
         return make_response(response_message, 200)
     
 class GetProducts(Resource):
-    @jwt_required()
+    
     def get(self):
         
         # print(get_jwt_identity(), '-'*30)
@@ -142,24 +142,6 @@ class GetProducts(Resource):
             products.append(product_dict)
         return make_response(jsonify(products), 200)
     
-    @jwt_required()
-    def post(self):
-        inputdata = request.get_json()
-        
-        new_product = Product(
-            image = inputdata['image'],
-            product_name = inputdata['product_name'],
-            description = inputdata['description'],
-            type = inputdata['type'],
-            supplier_id = inputdata['supplier_id'],
-            quantity = inputdata['quantity'],
-            minimum_stock = inputdata['minimum_stock']                                     
-        )
-        
-        db.session.add(new_product)
-        db.session.commit()
-        
-        return make_response(jsonify(new_product), 200)   
 
 class ProductById(Resource):
     @jwt_required()
@@ -225,7 +207,31 @@ class GetSuppliers(Resource):
             }
             suppliers.append(supplier_dict)
         return make_response(jsonify(suppliers), 200)
+    def post(self):
+            data = request.get_json()
 
+            # Validate the incoming data, ensuring it contains the required fields
+            if 'logo' not in data or 'name' not in data or 'contact' not in data:
+                return {'message': 'Missing required fields for supplier'}, 400
+
+            # Create a new Supplier instance
+            new_supplier = Supplier(
+                logo=data['logo'],
+                name=data['name'],
+                contact=data['contact']
+            )
+            supplier_dict ={
+                "id": new_supplier.id,
+                "logo":new_supplier.logo,
+                "name": new_supplier.name,
+                "contact": new_supplier.contact
+            }
+            # Add the new supplier to the database
+            db.session.add(new_supplier)
+            db.session.commit()
+
+            # Respond with a success message
+            return make_response(jsonify(supplier_dict), 200)  
 class SupplierById(Resource):
     @jwt_required()
     #get one supplier from db
@@ -264,7 +270,47 @@ class SupplierById(Resource):
             return response_body, 201
         else:
             return make_response(jsonify({"error": "Supplier not found"}),404)
-        
+    @jwt_required()
+    def post(self, id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('product_name', type=str, required=True)
+        parser.add_argument('image', type=str, required=True)
+        parser.add_argument('description', type=str, required=True)
+        parser.add_argument('quantity', type=int, required=True)
+        parser.add_argument('minimum_stock', type=int, required=True)
+        parser.add_argument('type', type=str, required=True)
+        args = parser.parse_args()
+
+        # Check if the supplier exists
+        supplier = Supplier.query.filter_by(id=id).first()
+        if not supplier:
+            return {'message': 'Supplier not found'}, 404
+
+        # Create a new Product instance and associate it with the supplier
+        new_product = Product(
+            product_name=args['product_name'],
+            description=args['description'],
+            quantity=args['quantity'],
+            minimum_stock=args['minimum_stock'],
+            image=args['image'],
+            type=args['type'],
+            supplier_id=id  # Set the supplier_id to the ID from the URL
+        )
+        product_dict ={
+                "id": new_product.id,
+                "image": new_product.image,
+                "product_name": new_product.product_name,
+                "description": new_product.description,
+                "type": new_product.type,
+                "minimum_stock": new_product.minimum_stock,
+                "supplier": new_product.supplier_id,
+                "quantity": new_product.quantity,
+            }
+
+        # Add the new product to the database
+        db.session.add(new_product)
+        db.session.commit()    
+        return  make_response(jsonify(product_dict), 200)    
     @jwt_required()
     def delete (self, id):
         supplier = Supplier.query.filter_by(id=id).first()
@@ -306,7 +352,7 @@ class PurchaseById(Resource):
             return make_response(jsonify({"error": "Purchase not found"}),404)
 
 class GetShippings(Resource):
-    @jwt_required()
+    
     # get all shippings 
     def get(self):
         
