@@ -3,12 +3,14 @@ import SupplierList from './SupplierList';
 import './Body.css';
 import NewSupplier from './Newsupplier'; 
 
-function Supplier() {
+function Supplier({access_token,headers}) {
   const [suppliers, setsuppliers] = useState([]);
   const [showNewSupplier, setShowNewSupplier] = useState(false); // State variable to control the visibility of NewSupplier
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/suppliers')
+    fetch('http://127.0.0.1:5555/suppliers',{  method: 'GET', 
+    headers: headers,
+  })
       .then((r) => r.json())
       .then((data) => {
         setsuppliers(data);
@@ -21,6 +23,7 @@ function Supplier() {
     fetch('http://127.0.0.1:5555/suppliers', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${access_token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newSupplier), // Convert the newSupplier object to JSON
