@@ -2,6 +2,7 @@ from app import app, db
 from models import User, Product, Supplier, Purchase, Shipping 
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
+#final commit 
 
 
 with app.app_context():
