@@ -10,7 +10,6 @@ flask-restful = "*"
 flask-jwt-extended = "*"
 flask-migrate = "*"
 sqlalchemy-serializer = "*"
-gunicorn = "*"
 
 [dev-packages]
 
